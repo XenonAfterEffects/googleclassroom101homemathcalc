@@ -95,6 +95,12 @@
     margin-bottom: 16px;
   }
 
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
   .slider-wrap {
     flex: 1;
     display: flex;
@@ -142,7 +148,7 @@
     cursor: pointer;
   }
 
-  .fullscreen-button {
+  .top-button {
     flex: 0 0 auto;
     height: 48px;
     padding: 0 18px;
@@ -155,11 +161,15 @@
     transition: background 0.24s ease, border-color 0.24s ease;
   }
 
-  .fullscreen-button:hover,
-  .fullscreen-button:focus-visible {
+  .top-button:hover,
+  .top-button:focus-visible {
     background: var(--panel-2);
     border-color: var(--border-active);
     outline: none;
+  }
+
+  .server-button {
+    background: var(--panel-3);
   }
 
   .player-shell {
@@ -206,6 +216,198 @@
     border: 0;
   }
 
+  .server-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 25;
+  }
+
+  .server-modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .server-modal {
+    display: flex;
+    flex-direction: column;
+    width: min(980px, calc(100vw - 48px));
+    max-height: min(78vh, 760px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: #101010;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  }
+
+  .server-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    background: #121212;
+  }
+
+  .server-modal-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .server-close {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel);
+    color: var(--text);
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: background 0.24s ease, border-color 0.24s ease;
+  }
+
+  .server-close:hover,
+  .server-close:focus-visible {
+    background: var(--panel-2);
+    border-color: var(--border-active);
+    outline: none;
+  }
+
+  .server-list {
+    flex: 1;
+    padding: 16px;
+    overflow: auto;
+  }
+
+  .server-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .server-card {
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #1f1f1f;
+    text-align: center;
+  }
+
+  .server-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .server-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #43d284;
+    flex: 0 0 auto;
+  }
+
+  .server-votes {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .server-votes strong {
+    color: #47dd89;
+  }
+
+  .server-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 0 0;
+  }
+
+  .server-tag {
+    padding: 8px 13px;
+    border-radius: 999px;
+    background: #111111;
+    font-size: 0.84rem;
+    font-weight: 700;
+    line-height: 1;
+    border: 1px solid #1f1f1f;
+  }
+
+  .server-tag.pvp,
+  .server-tag.pve,
+  .server-tag.factions,
+  .server-tag.prison,
+  .server-tag.rpg {
+    color: #ff665e;
+  }
+
+  .server-tag.minigames {
+    color: #f0e84b;
+  }
+
+  .server-tag.survival,
+  .server-tag.skyblock {
+    color: #47e08b;
+  }
+
+  .server-tag.miscellaneous,
+  .server-tag.creative {
+    color: #45ebba;
+  }
+
+  .server-ip {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.94rem;
+    font-weight: 700;
+    word-break: break-word;
+  }
+
+  .server-ip code {
+    color: #ff835d;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 1em;
+  }
+
+  .copy-button {
+    margin-top: 14px;
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #111111;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.24s ease, border-color 0.24s ease;
+  }
+
+  .copy-button:hover,
+  .copy-button:focus-visible {
+    background: #181818;
+    border-color: var(--border-active);
+    outline: none;
+  }
+
   @media (max-width: 900px) {
     body {
       overflow: auto;
@@ -247,8 +449,22 @@
       align-items: stretch;
     }
 
-    .fullscreen-button {
+    .top-actions {
       width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .top-button {
+      width: 100%;
+    }
+
+    .server-list {
+      padding: 12px;
+    }
+
+    .server-card {
+      padding: 16px;
     }
   }
 </style>
@@ -262,7 +478,10 @@
       <div class="slider-wrap">
         <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume" />
       </div>
-      <button class="fullscreen-button" id="fullscreenButton" type="button">Fullscreen</button>
+      <div class="top-actions">
+        <button class="top-button server-button" id="serversButton" type="button">Servers</button>
+        <button class="top-button" id="fullscreenButton" type="button">Fullscreen</button>
+      </div>
     </div>
 
     <section class="player-shell" id="playerShell">
@@ -272,10 +491,103 @@
   </main>
 </div>
 
+<div class="server-modal-overlay" id="serverModalOverlay" aria-hidden="true">
+  <section class="server-modal" role="dialog" aria-modal="true" aria-labelledby="serverModalTitle">
+    <div class="server-modal-header">
+      <h2 class="server-modal-title" id="serverModalTitle">Servers</h2>
+      <button class="server-close" id="closeServersButton" type="button" aria-label="Close servers menu">X</button>
+    </div>
+    <div class="server-list">
+      <div class="server-grid" id="serverGrid"></div>
+    </div>
+  </section>
+</div>
+
 <script>
   const CLIENTS = [
     { id: "wurstx", name: "WurstX", file: "WurstX.html" },
     { id: "resent", name: "Resent Client", file: "ResentClient5.1.html" }
+  ];
+
+  const SERVERS = [
+    {
+      name: "Voidsent MC",
+      votes: 1459,
+      ip: "wss://mc.voidsent.net",
+      tags: ["PVP", "PVE", "FACTIONS", "MINIGAMES", "SURVIVAL", "RPG", "MISCELLANEOUS"]
+    },
+    {
+      name: "VanillaMC",
+      votes: 1037,
+      ip: "wss://vanillamc.org",
+      tags: ["PVP", "FACTIONS", "SURVIVAL"]
+    },
+    {
+      name: "TuffNET",
+      votes: 507,
+      ip: "wss://tuff.ws",
+      tags: ["SURVIVAL", "SKYBLOCK"]
+    },
+    {
+      name: "Dumbshit Survival X | 1.12.2 | Vanilla Survival",
+      votes: 494,
+      ip: "wss://mc.dssx.uk",
+      tags: ["SURVIVAL", "MINIGAMES"]
+    },
+    {
+      name: "Lifesteal & Creative & Anarchy",
+      votes: 216,
+      ip: "wss://play.heartsmp.net",
+      tags: ["PVP", "PVE", "FACTIONS", "SURVIVAL", "MISCELLANEOUS", "MINIGAMES", "CREATIVE", "SKYBLOCK", "PRISON", "RPG"]
+    },
+    {
+      name: "MercuryMC",
+      votes: 211,
+      ip: "wss://mercurymc.net",
+      tags: ["SURVIVAL", "PVE", "PVP", "FACTIONS", "MISCELLANEOUS"]
+    },
+    {
+      name: "ArchMC",
+      votes: 177,
+      ip: "wss://arch.mc",
+      tags: ["PVP", "MINIGAMES", "SURVIVAL", "CREATIVE", "PRISON", "MISCELLANEOUS"]
+    },
+    {
+      name: "Fyre Network (BACK ONLINE!!)",
+      votes: 139,
+      ip: "wss://eagler.imcalledfyre.com",
+      tags: ["PVP", "MINIGAMES", "SURVIVAL", "PRISON", "MISCELLANEOUS", "SKYBLOCK", "PVE"]
+    },
+    {
+      name: "Pixel Craft",
+      votes: 122,
+      ip: "wss://pcsmp.net",
+      tags: ["PVP", "CREATIVE", "MISCELLANEOUS", "MINIGAMES", "PVE", "FACTIONS", "SURVIVAL", "RPG"]
+    },
+    {
+      name: "null's World",
+      votes: 120,
+      ip: "wss://mc.nullsworld.net",
+      tags: ["PVP", "MINIGAMES", "PVE", "SURVIVAL", "CREATIVE", "SKYBLOCK", "RPG", "MISCELLANEOUS"]
+    },
+    {
+      name: "xendMC",
+      votes: 69,
+      ip: "wss://xenamc.com",
+      tags: ["PVP", "MINIGAMES", "SURVIVAL", "SKYBLOCK", "MISCELLANEOUS"]
+    },
+    {
+      name: "SkeletonMC",
+      votes: 65,
+      ip: "wss://eagler.skeletonmc.com",
+      tags: ["SURVIVAL", "PVP", "PVE"]
+    },
+    {
+      name: "BedWetr [Natural disasters :>, Pillars Of Fortune]",
+      votes: 59,
+      ip: "wss://bedw3tr.bytommy.uk",
+      tags: ["SURVIVAL", "MINIGAMES", "PVP", "MISCELLANEOUS"]
+    }
   ];
 
   const AUDIO_BRIDGE_SOURCE = `
@@ -360,10 +672,14 @@
 
   const clientList = document.getElementById("clientList");
   const volumeSlider = document.getElementById("volumeSlider");
+  const serversButton = document.getElementById("serversButton");
   const fullscreenButton = document.getElementById("fullscreenButton");
   const playerShell = document.getElementById("playerShell");
   const playerFrame = document.getElementById("playerFrame");
   const loadingOverlay = document.getElementById("loadingOverlay");
+  const serverModalOverlay = document.getElementById("serverModalOverlay");
+  const closeServersButton = document.getElementById("closeServersButton");
+  const serverGrid = document.getElementById("serverGrid");
 
   let activeClientId = CLIENTS[0].id;
   let loadTimer = null;
@@ -455,6 +771,84 @@
     setActiveButton();
   }
 
+  function getTagClass(tag) {
+    return tag.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  }
+
+  async function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const helper = document.createElement("textarea");
+    helper.value = text;
+    helper.setAttribute("readonly", "");
+    helper.style.position = "absolute";
+    helper.style.left = "-9999px";
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand("copy");
+    document.body.removeChild(helper);
+  }
+
+  function buildServerMenu() {
+    const fragment = document.createDocumentFragment();
+
+    SERVERS.forEach((server) => {
+      const card = document.createElement("article");
+      card.className = "server-card";
+
+      const tagsHtml = server.tags
+        .map((tag) => '<span class="server-tag ' + getTagClass(tag) + '">' + tag + "</span>")
+        .join("");
+
+      card.innerHTML =
+        '<h3 class="server-name">' +
+          server.name +
+          '<span class="server-dot" aria-hidden="true"></span>' +
+        "</h3>" +
+        '<p class="server-votes">Votes: <strong>' + server.votes + "</strong></p>" +
+        '<div class="server-tags">' + tagsHtml + "</div>" +
+        '<p class="server-ip">IP: <code>' + server.ip + "</code></p>";
+
+      const copyButton = document.createElement("button");
+      copyButton.type = "button";
+      copyButton.className = "copy-button";
+      copyButton.textContent = "Copy";
+      copyButton.addEventListener("click", async () => {
+        const originalText = copyButton.textContent;
+        try {
+          await copyText(server.ip);
+          copyButton.textContent = "Copied";
+          window.setTimeout(() => {
+            copyButton.textContent = originalText;
+          }, 1200);
+        } catch (error) {
+          copyButton.textContent = "Failed";
+          window.setTimeout(() => {
+            copyButton.textContent = originalText;
+          }, 1200);
+        }
+      });
+
+      card.appendChild(copyButton);
+      fragment.appendChild(card);
+    });
+
+    serverGrid.appendChild(fragment);
+  }
+
+  function openServerMenu() {
+    serverModalOverlay.classList.add("open");
+    serverModalOverlay.setAttribute("aria-hidden", "false");
+  }
+
+  function closeServerMenu() {
+    serverModalOverlay.classList.remove("open");
+    serverModalOverlay.setAttribute("aria-hidden", "true");
+  }
+
   function loadClient(clientId) {
     const client = CLIENTS.find((entry) => entry.id === clientId);
     if (!client) {
@@ -509,6 +903,14 @@
     applyVolumeToFrame();
   });
 
+  serversButton.addEventListener("click", openServerMenu);
+  closeServersButton.addEventListener("click", closeServerMenu);
+  serverModalOverlay.addEventListener("click", (event) => {
+    if (event.target === serverModalOverlay) {
+      closeServerMenu();
+    }
+  });
+
   fullscreenButton.addEventListener("click", async () => {
     if (document.fullscreenElement === playerShell) {
       await document.exitFullscreen();
@@ -525,8 +927,15 @@
       document.fullscreenElement === playerShell ? "Exit Fullscreen" : "Fullscreen";
   });
 
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && serverModalOverlay.classList.contains("open")) {
+      closeServerMenu();
+    }
+  });
+
   updateSliderFill();
   buildButtons();
+  buildServerMenu();
   loadClient(activeClientId);
 </script>
 </body>
