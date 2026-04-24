@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eagler Launch Deck</title>
+<style>
+  :root {
+    --bg-0: #040814;
+    --bg-1: #0a1531;
+    --bg-2: #152d59;
+    --panel: rgba(9, 18, 39, 0.72);
+    --panel-strong: rgba(11, 22, 48, 0.9);
+    --panel-border: rgba(154, 187, 255, 0.16);
+    --text: #eff6ff;
+    --muted: #8da4cf;
+    --client-accent: #62d0ff;
+    --client-accent-glow: rgba(98, 208, 255, 0.34);
+    --shadow: 0 22px 48px rgba(0, 0, 0, 0.45);
+    --radius-xl: 30px;
+    --radius-lg: 24px;
+    --radius-md: 18px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    font-family: "Trebuchet MS", "Segoe UI", Tahoma, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at 14% 16%, rgba(77, 136, 255, 0.36), transparent 28%),
+      radial-gradient(circle at 86% 18%, rgba(0, 224, 195, 0.18), transparent 26%),
+      radial-gradient(circle at 50% 100%, rgba(87, 57, 186, 0.22), transparent 40%),
+      linear-gradient(145deg, var(--bg-0), var(--bg-1) 42%, var(--bg-2));
+    overflow: hidden;
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  body::before {
+    background:
+      linear-gradient(115deg, rgba(255, 255, 255, 0.05), transparent 34%),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.03), transparent 40%);
+    mix-blend-mode: screen;
+  }
+
+  body::after {
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px);
+    background-size: 24px 24px, 32px 32px;
+    opacity: 0.14;
+  }
+
+  .app-shell {
+    position: relative;
+    display: grid;
+    grid-template-columns: clamp(92px, 18vw, 280px) minmax(0, 1fr);
+    gap: clamp(14px, 2vw, 28px);
+    height: 100vh;
+    padding: clamp(14px, 2vw, 28px);
+  }
+
+  .client-rail,
+  .workspace {
+    min-width: 0;
+  }
+
+  .client-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .brand-card,
+  .control-bar,
+  .client-button,
+  .helper-pill {
+    backdrop-filter: blur(18px);
+  }
+
+  .brand-card {
+    padding: 18px 16px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+    background: linear-gradient(180deg, rgba(18, 32, 68, 0.9), rgba(9, 18, 39, 0.78));
+    box-shadow: var(--shadow);
+    animation: rise 0.55s ease both;
+  }
+
+  .brand-kicker {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .brand-title {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .brand-copy {
+    margin: 8px 0 0;
+    color: var(--muted);
+    line-height: 1.55;
+    font-size: 0.9rem;
+  }
+
+  .client-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .client-button {
+    --button-accent: var(--client-accent);
+    --button-glow: var(--client-accent-glow);
+    position: relative;
+    width: 72px;
+    min-height: 82px;
+    padding: 14px;
+    border: 1px solid transparent;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(9, 18, 39, 0.82), rgba(10, 22, 49, 0.62));
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition:
+      width 0.35s ease,
+      transform 0.24s ease,
+      border-color 0.24s ease,
+      background 0.24s ease,
+      box-shadow 0.24s ease;
+    animation: rise 0.55s ease both;
+  }
+
+  .client-button:hover,
+  .client-button:focus-visible,
+  .client-button.active {
+    width: 100%;
+    border-color: var(--button-accent);
+    background: linear-gradient(135deg, rgba(19, 39, 82, 0.92), rgba(11, 23, 47, 0.82));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 22px 40px var(--button-glow);
+  }
+
+  .client-button:hover,
+  .client-button:focus-visible {
+    transform: translateX(4px);
+  }
+
+  .client-button-inner {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+  }
+
+  .client-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--button-accent), rgba(255, 255, 255, 0.16));
+    color: #071120;
+    font-weight: 900;
+    font-size: 0.94rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 10px 24px var(--button-glow);
+  }
+
+  .client-copy {
+    min-width: 0;
+    opacity: 0;
+    transform: translateX(12px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+
+  .client-button:hover .client-copy,
+  .client-button:focus-visible .client-copy,
+  .client-button.active .client-copy {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .client-name {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .client-note {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 16px;
+  }
+
+  .control-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+    background: linear-gradient(180deg, rgba(16, 32, 65, 0.88), rgba(8, 17, 37, 0.82));
+    box-shadow: var(--shadow);
+    animation: rise 0.6s ease 0.08s both;
+  }
+
+  .control-copy {
+    min-width: 0;
+  }
+
+  .control-kicker {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .control-title {
+    margin: 0;
+    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .control-description {
+    margin: 6px 0 0;
+    color: var(--muted);
+    line-height: 1.55;
+    font-size: 0.95rem;
+  }
+
+  .control-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .volume-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: min(100%, 360px);
+    padding: 12px 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(180, 210, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .volume-label {
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #volumeSlider {
+    --volume-fill: 80%;
+    flex: 1;
+    width: clamp(160px, 20vw, 240px);
+    margin: 0;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background:
+      linear-gradient(
+        90deg,
+        var(--client-accent) 0,
+        var(--client-accent) var(--volume-fill),
+        rgba(255, 255, 255, 0.14) var(--volume-fill),
+        rgba(255, 255, 255, 0.14) 100%
+      );
+    outline: none;
+  }
+
+  #volumeSlider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px var(--client-accent-glow);
+    cursor: pointer;
+  }
+
+  #volumeSlider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px var(--client-accent-glow);
+    cursor: pointer;
+  }
+
+  .volume-value {
+    min-width: 50px;
+    color: var(--text);
+    font-weight: 800;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fullscreen-btn,
+  .overlay-action {
+    border: 0;
+    border-radius: 18px;
+    cursor: pointer;
+    color: #06111f;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+  }
+
+  .fullscreen-btn {
+    padding: 14px 18px;
+    background: linear-gradient(135deg, var(--client-accent), #ffffff 120%);
+    box-shadow: 0 16px 30px var(--client-accent-glow);
+  }
+
+  .fullscreen-btn:hover,
+  .overlay-action:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.04);
+  }
+
+  .viewer-shell {
+    position: relative;
+    min-height: 0;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(171, 205, 255, 0.16);
+    background: linear-gradient(180deg, rgba(9, 18, 39, 0.94), rgba(5, 10, 22, 0.94));
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    isolation: isolate;
+    animation: rise 0.65s ease 0.12s both;
+  }
+
+  .viewer-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 34%),
+      radial-gradient(circle at top right, var(--client-accent-glow), transparent 26%);
+    pointer-events: none;
+  }
+
+  .viewer-frame {
+    position: absolute;
+    inset: 18px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #000000;
+    border: 1px solid rgba(195, 218, 255, 0.12);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 16px 34px rgba(0, 0, 0, 0.45);
+  }
+
+  #playerFrame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #000000;
+  }
+
+  .viewer-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 30px;
+    text-align: center;
+    background:
+      radial-gradient(circle at top, rgba(61, 108, 205, 0.28), transparent 36%),
+      linear-gradient(180deg, rgba(4, 9, 20, 0.76), rgba(4, 9, 20, 0.88));
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+  }
+
+  .viewer-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .overlay-spinner {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.12);
+    border-top-color: var(--client-accent);
+    box-shadow: 0 0 28px var(--client-accent-glow);
+    animation: spin 0.9s linear infinite;
+  }
+
+  .overlay-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .overlay-copy {
+    max-width: 42ch;
+    margin: 0;
+    color: #c9d7f2;
+    line-height: 1.6;
+  }
+
+  .overlay-action {
+    padding: 13px 18px;
+    margin-top: 6px;
+    background: linear-gradient(135deg, var(--client-accent), #ffffff 125%);
+    box-shadow: 0 16px 30px var(--client-accent-glow);
+  }
+
+  .overlay-action.hidden {
+    display: none;
+  }
+
+  .helper-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    animation: rise 0.65s ease 0.18s both;
+  }
+
+  .helper-pill {
+    min-width: 0;
+    padding: 11px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(180, 210, 255, 0.14);
+    background: rgba(8, 17, 37, 0.58);
+    color: var(--muted);
+    box-shadow: var(--shadow);
+    line-height: 1.5;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .helper-pill code {
+    color: var(--text);
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+
+  .viewer-shell:fullscreen {
+    border-radius: 0;
+    border: 0;
+  }
+
+  .viewer-shell:fullscreen::before {
+    display: none;
+  }
+
+  .viewer-shell:fullscreen .viewer-frame {
+    inset: 0;
+    border-radius: 0;
+    border: 0;
+  }
+
+  .viewer-shell:fullscreen .viewer-overlay {
+    border-radius: 0;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 980px) {
+    body {
+      overflow: auto;
+    }
+
+    .app-shell {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto minmax(0, 1fr);
+      height: auto;
+      min-height: 100vh;
+    }
+
+    .client-list {
+      flex-direction: row;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .client-button {
+      flex: 0 0 min(230px, 70vw);
+      width: min(230px, 70vw);
+      min-height: 78px;
+    }
+
+    .client-button:hover,
+    .client-button:focus-visible {
+      transform: translateY(-2px);
+    }
+
+    .client-copy {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .app-shell {
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .control-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .control-actions {
+      justify-content: stretch;
+    }
+
+    .volume-wrap,
+    .fullscreen-btn {
+      width: 100%;
+    }
+
+    .viewer-shell {
+      min-height: 62vh;
+    }
+
+    .viewer-frame {
+      inset: 12px;
+      border-radius: 20px;
+    }
+
+    .helper-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .helper-pill {
+      white-space: normal;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+<main class="app-shell">
+  <aside class="client-rail">
+    <section class="brand-card" aria-label="Launcher introduction">
+      <span class="brand-kicker">Launch Deck</span>
+      <h1 class="brand-title">Eagler Hub</h1>
+      <p class="brand-copy">Smooth side switching, a big center player, top volume control, and fullscreen on demand.</p>
+    </section>
+
+    <nav class="client-list" id="clientList" aria-label="Choose a client"></nav>
+  </aside>
+
+  <section class="workspace">
+    <header class="control-bar">
+      <div class="control-copy">
+        <span class="control-kicker">Embedded Player</span>
+        <h2 class="control-title" id="currentClientName">Loading</h2>
+        <p class="control-description" id="currentClientDescription">Preparing your selected EaglerCraft client inside the center player.</p>
+      </div>
+
+      <div class="control-actions">
+        <div class="volume-wrap">
+          <label class="volume-label" for="volumeSlider">Volume</label>
+          <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.8" />
+          <output class="volume-value" id="volumeValue" for="volumeSlider">80%</output>
+        </div>
+
+        <button class="fullscreen-btn" id="fullscreenButton" type="button">Fullscreen</button>
+      </div>
+    </header>
+
+    <section class="viewer-shell" id="playerShell">
+      <div class="viewer-overlay" id="playerOverlay">
+        <div class="overlay-spinner" id="overlaySpinner" aria-hidden="true"></div>
+        <h3 class="overlay-title" id="overlayTitle">Loading Player</h3>
+        <p class="overlay-copy" id="overlayCopy">Building the center player and wiring up the smooth launcher controls.</p>
+        <button class="overlay-action hidden" id="overlayAction" type="button">Retry</button>
+      </div>
+
+      <div class="viewer-frame">
+        <iframe
+          id="playerFrame"
+          title="Embedded EaglerCraft player"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
+    </section>
+
+    <footer class="helper-bar">
+      <div class="helper-pill" id="statusPill">Starting launcher...</div>
+      <div class="helper-pill" id="sourcePill">Source file: none yet</div>
+      <div class="helper-pill" id="hintPill">Tip: add more clients later by extending the <code>CLIENTS</code> list in this file.</div>
+    </footer>
+  </section>
+</main>
+<script>
+  const AUDIO_BRIDGE_SOURCE = String.raw`(() => {
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const state = window.__launcherAudioBridgeState || {
+      volume: 0.8,
+      contexts: new Set()
+    };
+
+    window.__launcherAudioBridgeState = state;
+
+    const nativeAudioNodeConnect =
+      window.AudioNode && AudioNode.prototype && AudioNode.prototype.connect
+        ? AudioNode.prototype.connect
+        : null;
+
+    function applyMediaVolume(root) {
+      if (!root || !root.querySelectorAll) {
+        return;
+      }
+
+      root.querySelectorAll("audio,video").forEach((mediaElement) => {
+        try {
+          mediaElement.volume = state.volume;
+        } catch (error) {
+        }
+      });
+    }
+
+    function installContext(context) {
+      if (!context || !nativeAudioNodeConnect) {
+        return null;
+      }
+
+      if (context.__launcherMasterGain) {
+        return context.__launcherMasterGain;
+      }
+
+      const masterGain = context.createGain();
+      masterGain.gain.value = state.volume;
+      nativeAudioNodeConnect.call(masterGain, context.destination);
+      context.__launcherMasterGain = masterGain;
+      state.contexts.add(context);
+      return masterGain;
+    }
+
+    if (nativeAudioNodeConnect && !AudioNode.prototype.__launcherConnectPatched) {
+      AudioNode.prototype.connect = function (...args) {
+        const targetNode = args[0];
+
+        if (targetNode && this.context && targetNode === this.context.destination) {
+          const masterGain = installContext(this.context);
+          if (masterGain) {
+            args[0] = masterGain;
+          }
+        }
+
+        return nativeAudioNodeConnect.apply(this, args);
+      };
+
+      Object.defineProperty(AudioNode.prototype, "__launcherConnectPatched", {
+        value: true,
+        configurable: false
+      });
+    }
+
+    function setVolume(value) {
+      state.volume = clamp(Number(value) || 0, 0, 1);
+
+      state.contexts.forEach((context) => {
+        try {
+          if (context.__launcherMasterGain) {
+            context.__launcherMasterGain.gain.value = state.volume;
+          }
+        } catch (error) {
+        }
+      });
+
+      applyMediaVolume(document);
+    }
+
+    window.__launcherAudioBridge = {
+      getVolume() {
+        return state.volume;
+      },
+      setVolume
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      applyMediaVolume(document);
+
+      if (!window.MutationObserver || !document.documentElement) {
+        return;
+      }
+
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (!(node instanceof Element)) {
+              return;
+            }
+
+            if (node.matches("audio,video")) {
+              try {
+                node.volume = state.volume;
+              } catch (error) {
+              }
+            }
+
+            applyMediaVolume(node);
+          });
+        });
+      });
+
+      observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    });
+
+    setVolume(state.volume);
+  })();`;
+
+  // Add more client entries here when you are ready.
+  const CLIENTS = [
+    {
+      id: "wurstx",
+      name: "WurstX",
+      file: "WurstX.html",
+      badge: "WX",
+      note: "Classic utility build",
+      description: "A utility-focused client loaded into the large center player with smoother launcher controls around it.",
+      accent: "#62d0ff",
+      glow: "rgba(98, 208, 255, 0.34)"
+    },
+    {
+      id: "resent51",
+      name: "Resent 5.1",
+      file: "ResentClient5.1.html",
+      badge: "R5",
+      note: "Fast PvP-focused build",
+      description: "A sharper PvP-style build that you can swap into the same center player without leaving the launcher.",
+      accent: "#ff9b68",
+      glow: "rgba(255, 155, 104, 0.32)"
+    }
+  ];
+
+  const clientHtmlCache = new Map();
+
+  const elements = {
+    clientList: document.getElementById("clientList"),
+    currentClientName: document.getElementById("currentClientName"),
+    currentClientDescription: document.getElementById("currentClientDescription"),
+    volumeSlider: document.getElementById("volumeSlider"),
+    volumeValue: document.getElementById("volumeValue"),
+    fullscreenButton: document.getElementById("fullscreenButton"),
+    playerShell: document.getElementById("playerShell"),
+    playerFrame: document.getElementById("playerFrame"),
+    playerOverlay: document.getElementById("playerOverlay"),
+    overlaySpinner: document.getElementById("overlaySpinner"),
+    overlayTitle: document.getElementById("overlayTitle"),
+    overlayCopy: document.getElementById("overlayCopy"),
+    overlayAction: document.getElementById("overlayAction"),
+    statusPill: document.getElementById("statusPill"),
+    sourcePill: document.getElementById("sourcePill"),
+    hintPill: document.getElementById("hintPill")
+  };
+
+  let activeClient = null;
+  let activeBridge = null;
+  let loadNonce = 0;
+
+  function safeStorageGet(key) {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function safeStorageSet(key, value) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (error) {
+    }
+  }
+
+  function updateAccent(client) {
+    document.documentElement.style.setProperty("--client-accent", client.accent);
+    document.documentElement.style.setProperty("--client-accent-glow", client.glow);
+  }
+
+  function updateVolumeUI(value) {
+    const percent = Math.round(value * 100);
+    elements.volumeSlider.style.setProperty("--volume-fill", percent + "%");
+    elements.volumeValue.textContent = percent + "%";
+  }
+
+  function applyVolume() {
+    const volume = Number(elements.volumeSlider.value);
+    updateVolumeUI(volume);
+    safeStorageSet("launch-deck-volume", String(volume));
+
+    try {
+      if (activeBridge && typeof activeBridge.setVolume === "function") {
+        activeBridge.setVolume(volume);
+      }
+    } catch (error) {
+    }
+
+    try {
+      const mediaElements = elements.playerFrame.contentWindow?.document?.querySelectorAll("audio,video");
+      mediaElements?.forEach((mediaElement) => {
+        mediaElement.volume = volume;
+      });
+    } catch (error) {
+    }
+  }
+
+  function setOverlay(title, copy, options = {}) {
+    const { show = true, showSpinner = true, actionText = "", actionHandler = null } = options;
+
+    elements.overlayTitle.textContent = title;
+    elements.overlayCopy.textContent = copy;
+    elements.overlaySpinner.style.display = showSpinner ? "block" : "none";
+
+    if (actionText && typeof actionHandler === "function") {
+      elements.overlayAction.textContent = actionText;
+      elements.overlayAction.onclick = actionHandler;
+      elements.overlayAction.classList.remove("hidden");
+    } else {
+      elements.overlayAction.onclick = null;
+      elements.overlayAction.classList.add("hidden");
+    }
+
+    elements.playerOverlay.classList.toggle("hidden", !show);
+  }
+
+  function updateClientMeta(client, state = {}) {
+    elements.currentClientName.textContent = client.name;
+    elements.currentClientDescription.textContent = client.description;
+    elements.sourcePill.textContent = "Source file: " + client.file;
+    elements.statusPill.textContent = state.loading
+      ? "Loading client: " + client.name
+      : "Loaded client: " + client.name;
+  }
+
+  function setActiveButton(clientId) {
+    elements.clientList.querySelectorAll(".client-button").forEach((button) => {
+      const isActive = button.dataset.clientId === clientId;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+
+  function createClientButtons() {
+    const fragment = document.createDocumentFragment();
+
+    CLIENTS.forEach((client, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "client-button";
+      button.dataset.clientId = client.id;
+      button.style.setProperty("--button-accent", client.accent);
+      button.style.setProperty("--button-glow", client.glow);
+      button.style.animationDelay = 0.08 + index * 0.05 + "s";
+      button.innerHTML =
+        '<span class="client-button-inner">' +
+          '<span class="client-icon">' + client.badge + "</span>" +
+          '<span class="client-copy">' +
+            '<span class="client-name">' + client.name + "</span>" +
+            '<span class="client-note">' + client.note + "</span>" +
+          "</span>" +
+        "</span>";
+
+      button.addEventListener("click", () => {
+        if (activeClient && activeClient.id === client.id) {
+          return;
+        }
+
+        loadClient(client.id);
+      });
+
+      fragment.appendChild(button);
+    });
+
+    elements.clientList.appendChild(fragment);
+  }
+
+  function waitForFrameLoad(frame, timeoutMs = 90000) {
+    return new Promise((resolve, reject) => {
+      const timer = window.setTimeout(() => {
+        cleanup();
+        reject(new Error("The embedded player took too long to load."));
+      }, timeoutMs);
+
+      function cleanup() {
+        window.clearTimeout(timer);
+        frame.removeEventListener("load", handleLoad);
+        frame.removeEventListener("error", handleError);
+      }
+
+      function handleLoad() {
+        cleanup();
+        resolve();
+      }
+
+      function handleError() {
+        cleanup();
+        reject(new Error("The embedded player reported a loading error."));
+      }
+
+      frame.addEventListener("load", handleLoad);
+      frame.addEventListener("error", handleError);
+    });
+  }
+
+  function injectAudioBridge(source) {
+    const baseHref = new URL("./", window.location.href).href;
+    const injection =
+      '\n<base href="' + baseHref + '">' +
+      "\n<script>" + AUDIO_BRIDGE_SOURCE + "<\\/script>\n";
+
+    if (/<head\b[^>]*>/i.test(source)) {
+      return source.replace(/<head\b[^>]*>/i, (match) => match + injection);
+    }
+
+    return (
+      "<!DOCTYPE html><html><head>" +
+      injection +
+      "</head><body>" +
+      source +
+      "</body></html>"
+    );
+  }
+
+  async function getInjectedClientHtml(client) {
+    if (!clientHtmlCache.has(client.file)) {
+      const request = fetch(client.file)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Could not read " + client.file);
+          }
+
+          return response.text();
+        })
+        .then((source) => injectAudioBridge(source))
+        .catch((error) => {
+          clientHtmlCache.delete(client.file);
+          throw error;
+        });
+
+      clientHtmlCache.set(client.file, request);
+    }
+
+    return clientHtmlCache.get(client.file);
+  }
+
+  async function loadClientDirect(client, nonce) {
+    setOverlay(
+      "Loading " + client.name,
+      "Direct embed mode is active. If the volume slider feels limited, opening this folder through a local web server will give the launcher fuller control.",
+      { show: true, showSpinner: true }
+    );
+
+    elements.playerFrame.removeAttribute("srcdoc");
+    const frameLoad = waitForFrameLoad(elements.playerFrame);
+    elements.playerFrame.src = client.file;
+    await frameLoad;
+
+    if (nonce !== loadNonce) {
+      return;
+    }
+
+    activeBridge = elements.playerFrame.contentWindow?.__launcherAudioBridge ?? null;
+    applyVolume();
+    setOverlay("", "", { show: false });
+    elements.statusPill.textContent = "Loaded client: " + client.name + " (direct mode)";
+    elements.hintPill.textContent = "Direct mode is active. For the best volume control, serve this folder over http:// or https:// instead of opening it directly as a file.";
+  }
+
+  async function loadClient(clientId) {
+    const client = CLIENTS.find((entry) => entry.id === clientId);
+    if (!client) {
+      return;
+    }
+
+    activeClient = client;
+    activeBridge = null;
+    loadNonce += 1;
+    const currentNonce = loadNonce;
+
+    updateAccent(client);
+    updateClientMeta(client, { loading: true });
+    setActiveButton(client.id);
+    safeStorageSet("launch-deck-client", client.id);
+    elements.hintPill.textContent = "Tip: hover the side buttons to expand them, then switch clients without leaving the page.";
+
+    setOverlay(
+      "Loading " + client.name,
+      "Preparing the center player, injecting smoother controls, and getting the client ready inside the launcher.",
+      { show: true, showSpinner: true }
+    );
+
+    try {
+      const compiledHtml = await getInjectedClientHtml(client);
+      if (currentNonce !== loadNonce) {
+        return;
+      }
+
+      elements.playerFrame.removeAttribute("src");
+      const frameLoad = waitForFrameLoad(elements.playerFrame);
+      elements.playerFrame.srcdoc = compiledHtml;
+      await frameLoad;
+
+      if (currentNonce !== loadNonce) {
+        return;
+      }
+
+      activeBridge = elements.playerFrame.contentWindow?.__launcherAudioBridge ?? null;
+      applyVolume();
+      setOverlay("", "", { show: false });
+      updateClientMeta(client, { loading: false });
+    } catch (error) {
+      console.warn("Injected client loading failed, switching to direct mode.", error);
+
+      try {
+        await loadClientDirect(client, currentNonce);
+        updateClientMeta(client, { loading: false });
+      } catch (directError) {
+        console.error(directError);
+        elements.statusPill.textContent = "Failed to load client: " + client.name;
+        elements.hintPill.textContent = "The embed failed to load. Try again, or make sure the client file is still in this folder.";
+
+        setOverlay(
+          "Player Load Failed",
+          "The launcher could not open " + client.file + ". Make sure the file is present and try again.",
+          {
+            show: true,
+            showSpinner: false,
+            actionText: "Retry",
+            actionHandler: () => loadClient(client.id)
+          }
+        );
+      }
+    }
+  }
+
+  async function toggleFullscreen() {
+    if (document.fullscreenElement === elements.playerShell) {
+      await document.exitFullscreen();
+      return;
+    }
+
+    await elements.playerShell.requestFullscreen();
+  }
+
+  function syncFullscreenButton() {
+    elements.fullscreenButton.textContent =
+      document.fullscreenElement === elements.playerShell ? "Exit Fullscreen" : "Fullscreen";
+  }
+
+  function initialise() {
+    createClientButtons();
+
+    const savedVolume = Number(safeStorageGet("launch-deck-volume"));
+    if (!Number.isNaN(savedVolume) && savedVolume >= 0 && savedVolume <= 1) {
+      elements.volumeSlider.value = String(savedVolume);
+    }
+
+    updateVolumeUI(Number(elements.volumeSlider.value));
+
+    elements.volumeSlider.addEventListener("input", applyVolume);
+    elements.fullscreenButton.addEventListener("click", toggleFullscreen);
+    document.addEventListener("fullscreenchange", syncFullscreenButton);
+    syncFullscreenButton();
+
+    const savedClientId = safeStorageGet("launch-deck-client");
+    const defaultClient = CLIENTS.some((client) => client.id === savedClientId)
+      ? savedClientId
+      : CLIENTS[0].id;
+
+    loadClient(defaultClient);
+  }
+
+  initialise();
+</script>
+</body>
+</html>
