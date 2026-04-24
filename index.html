@@ -267,15 +267,15 @@
 
     <section class="player-shell" id="playerShell">
       <iframe id="playerFrame" title="Eagler player" allow="autoplay; fullscreen" allowfullscreen></iframe>
-      <div class="loading" id="loadingOverlay">Loading player...</div>
+      <div class="loading" id="loadingOverlay">Loading...</div>
     </section>
   </main>
 </div>
 
 <script>
   const CLIENTS = [
-    { id: "wurstx", name: "Wurst X", file: "WurstX.html" },
-    { id: "resent", name: "Resent", file: "ResentClient5.1.html" }
+    { id: "wurstx", name: "WurstX", file: "WurstX.html" },
+    { id: "resent", name: "Resent Client", file: "ResentClient5.1.html" }
   ];
 
   const AUDIO_BRIDGE_SOURCE = `
@@ -367,6 +367,7 @@
 
   let activeClientId = CLIENTS[0].id;
   let loadTimer = null;
+  let loadRequestId = 0;
 
   function updateSliderFill() {
     const fill = Math.round(Number(volumeSlider.value) * 100);
@@ -460,6 +461,7 @@
       return;
     }
 
+    const requestId = ++loadRequestId;
     activeClientId = client.id;
     setActiveButton();
     showLoading("Loading " + client.name + "...");
@@ -469,13 +471,16 @@
     }
 
     loadTimer = window.setTimeout(() => {
+      if (requestId !== loadRequestId) {
+        return;
+      }
+
       showLoading("Still loading " + client.name + "...");
     }, 3500);
 
-    playerFrame.src = "about:blank";
-    window.requestAnimationFrame(() => {
-      playerFrame.src = client.file;
-    });
+    const clientUrl = new URL(client.file, window.location.href);
+    clientUrl.searchParams.set("launcher", String(Date.now()));
+    playerFrame.src = clientUrl.href;
   }
 
   playerFrame.addEventListener("load", () => {
@@ -487,6 +492,16 @@
     installAudioBridge();
     applyVolumeToFrame();
     hideLoading();
+  });
+
+  playerFrame.addEventListener("error", () => {
+    if (loadTimer) {
+      window.clearTimeout(loadTimer);
+      loadTimer = null;
+    }
+
+    const activeClient = CLIENTS.find((entry) => entry.id === activeClientId);
+    showLoading("Could not load " + (activeClient ? activeClient.name : "client") + ".");
   });
 
   volumeSlider.addEventListener("input", () => {
