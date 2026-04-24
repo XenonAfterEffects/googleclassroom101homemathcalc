@@ -240,51 +240,49 @@
 
   .server-modal {
     position: relative;
-    width: min(980px, calc(100vw - 48px));
-    max-height: min(78vh, 760px);
-    border: 3px solid #0e0e0e;
-    border-radius: 20px;
-    background-color: #2a1c12;
-    background-image:
-      linear-gradient(45deg, rgba(72, 52, 34, 0.35) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(72, 52, 34, 0.35) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(32, 21, 12, 0.45) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(32, 21, 12, 0.45) 75%);
-    background-size: 16px 16px;
-    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    width: min(760px, calc(100vw - 48px));
+    height: min(620px, calc(100vh - 80px));
+    border: 4px solid #111111;
+    border-radius: 48px;
+    background: #050505;
     overflow: hidden;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   }
 
   .server-modal-header {
-    display: flex;
-    justify-content: center;
-    padding: 24px 64px 14px;
+    position: absolute;
+    top: 18px;
+    left: -20px;
+    z-index: 2;
+    padding: 0;
   }
 
   .server-modal-title {
     margin: 0;
-    color: #f2f2f2;
+    padding: 18px 26px 18px 32px;
+    border: 4px solid #111111;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #111111;
     font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: 0.02em;
-    text-shadow: 2px 2px 0 #000000;
+    line-height: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 20%, 92% 48%, 90% 86%, 82% 100%, 0 100%);
   }
 
   .server-close {
     position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 42px;
-    height: 42px;
-    border: 2px solid #1c1c1c;
-    border-radius: 10px;
-    background: linear-gradient(180deg, #b8b8b8, #8b8b8b);
-    color: var(--text);
-    font-size: 1.15rem;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #111111;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #111111;
+    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
     transition: filter 0.2s ease;
   }
 
@@ -294,179 +292,64 @@
     outline: none;
   }
 
-  .server-browser {
-    display: grid;
-    grid-template-columns: 260px minmax(0, 1fr);
-    gap: 18px;
-    padding: 0 18px 18px;
-    min-height: 540px;
-  }
-
   .server-list {
-    min-height: 0;
-    padding: 8px;
-    border: 2px solid #1a1a1a;
-    border-radius: 14px;
-    background: rgba(16, 9, 5, 0.38);
+    height: 100%;
+    padding: 92px 34px 34px;
     overflow: auto;
   }
 
   .server-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 18px;
   }
 
   .server-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     width: 100%;
-    padding: 12px 14px;
-    border: 2px solid #1d1d1d;
-    border-radius: 10px;
-    background: linear-gradient(180deg, #9c9c9c, #727272);
-    color: #ffffff;
+    min-height: 74px;
+    padding: 16px 16px 16px 28px;
+    border: 4px solid #111111;
+    border-radius: 24px;
+    background: #ffffff;
+    color: #111111;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 700;
     line-height: 1.35;
-    cursor: pointer;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
-    transition: filter 0.2s ease, transform 0.2s ease;
+    cursor: default;
   }
 
-  .server-entry:hover,
-  .server-entry:focus-visible {
-    filter: brightness(1.05);
-    outline: none;
-    transform: translateY(-1px);
+  .server-entry-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .server-entry.active {
-    background: linear-gradient(180deg, #6d8fdb, #4d68ac);
+    background: #f4f4f4;
   }
 
-  .server-editor {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    padding: 18px 18px 20px;
-    border: 2px solid #171717;
-    border-radius: 14px;
-    background: rgba(30, 17, 9, 0.48);
-  }
-
-  .mc-label {
-    margin: 0 0 8px;
-    color: #bdbdbd;
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-shadow: 2px 2px 0 #000000;
-  }
-
-  .mc-field {
-    min-height: 46px;
-    margin-bottom: 14px;
-    padding: 10px 12px;
-    border: 2px solid #7d7d7d;
-    background: #000000;
-    color: #ffffff;
-    font-size: 0.98rem;
-    font-weight: 700;
-    line-height: 1.35;
-    box-shadow:
-      inset 2px 2px 0 #2a2a2a,
-      inset -2px -2px 0 #000000;
-    word-break: break-word;
-  }
-
-  .mc-helper {
-    margin: 4px 0 0;
-    color: #c9c9c9;
-    font-size: 0.9rem;
-    line-height: 1.45;
-    text-align: center;
-    text-shadow: 2px 2px 0 #000000;
-  }
-
-  .mc-votes {
-    margin: 0 0 14px;
-    color: #c9c9c9;
-    font-size: 0.98rem;
-    font-weight: 700;
-    text-align: center;
-    text-shadow: 2px 2px 0 #000000;
-  }
-
-  .mc-votes strong {
-    color: #56e18f;
-  }
-
-  .server-tags {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 0 0 18px;
-  }
-
-  .server-tag {
-    padding: 8px 13px;
-    border-radius: 999px;
-    background: #111111;
-    font-size: 0.84rem;
-    font-weight: 700;
-    line-height: 1;
-    border: 1px solid #1f1f1f;
-  }
-
-  .server-tag.pvp,
-  .server-tag.pve,
-  .server-tag.factions,
-  .server-tag.prison,
-  .server-tag.rpg {
-    color: #ff665e;
-  }
-
-  .server-tag.minigames {
-    color: #f0e84b;
-  }
-
-  .server-tag.survival,
-  .server-tag.skyblock {
-    color: #47e08b;
-  }
-
-  .server-tag.miscellaneous,
-  .server-tag.creative {
-    color: #45ebba;
-  }
-
-  .mc-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: auto;
-  }
-
-  .mc-button {
-    min-height: 42px;
-    padding: 0 14px;
-    border: 2px solid #1d1d1d;
-    border-radius: 10px;
-    background: linear-gradient(180deg, #9c9c9c, #727272);
-    color: #ffffff;
+  .copy-button {
+    flex: 0 0 auto;
+    min-width: 88px;
+    height: 36px;
+    padding: 0 16px;
+    border: 4px solid #111111;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #111111;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
     transition: filter 0.2s ease;
   }
 
-  .mc-button.secondary {
-    background: linear-gradient(180deg, #868686, #666666);
-  }
-
-  .mc-button:hover,
-  .mc-button:focus-visible {
+  .copy-button:hover,
+  .copy-button:focus-visible {
     filter: brightness(1.05);
     outline: none;
   }
@@ -505,13 +388,8 @@
       min-height: 420px;
     }
 
-    .server-browser {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-
     .server-list {
-      max-height: 220px;
+      padding: 88px 22px 22px;
     }
   }
 
@@ -531,30 +409,39 @@
       width: 100%;
     }
 
-    .server-list {
-      padding: 12px;
-    }
-
     .server-modal {
       width: calc(100vw - 24px);
       max-height: calc(100vh - 24px);
+      border-radius: 32px;
     }
 
     .server-modal-header {
-      padding: 18px 52px 10px;
+      top: 14px;
+      left: -12px;
     }
 
-    .server-browser {
-      padding: 0 12px 12px;
-      gap: 12px;
+    .server-modal-title {
+      padding: 14px 22px 14px 26px;
+      font-size: 1.05rem;
     }
 
-    .server-editor {
-      padding: 14px;
+    .server-list {
+      padding: 84px 16px 16px;
     }
 
-    .mc-actions {
-      grid-template-columns: 1fr;
+    .server-entry {
+      min-height: 66px;
+      padding: 12px 12px 12px 20px;
+      border-radius: 20px;
+    }
+
+    .server-entry-label {
+      font-size: 0.88rem;
+    }
+
+    .copy-button {
+      min-width: 78px;
+      height: 34px;
     }
   }
 </style>
@@ -584,29 +471,11 @@
 <div class="server-modal-overlay" id="serverModalOverlay" aria-hidden="true">
   <section class="server-modal" role="dialog" aria-modal="true" aria-labelledby="serverModalTitle">
     <div class="server-modal-header">
-      <h2 class="server-modal-title" id="serverModalTitle">Edit Server Info</h2>
+      <h2 class="server-modal-title" id="serverModalTitle">Servers</h2>
       <button class="server-close" id="closeServersButton" type="button" aria-label="Close servers menu">X</button>
     </div>
-    <div class="server-browser">
-      <div class="server-list">
-        <div class="server-grid" id="serverGrid"></div>
-      </div>
-      <div class="server-editor">
-        <p class="mc-label">Server Name</p>
-        <div class="mc-field" id="serverPreviewName"></div>
-
-        <p class="mc-label">Server Address</p>
-        <div class="mc-field" id="serverPreviewIp"></div>
-
-        <p class="mc-votes">Votes: <strong id="serverPreviewVotes"></strong></p>
-        <div class="server-tags" id="serverPreviewTags"></div>
-        <p class="mc-helper">Copy the name or address, then paste it into Multiplayer &gt; Add Server.</p>
-
-        <div class="mc-actions">
-          <button class="mc-button secondary" id="copyServerNameButton" type="button">Copy Name</button>
-          <button class="mc-button" id="copyServerIpButton" type="button">Copy Address</button>
-        </div>
-      </div>
+    <div class="server-list">
+      <div class="server-grid" id="serverGrid"></div>
     </div>
   </section>
 </div>
@@ -789,15 +658,8 @@
   const serverModalOverlay = document.getElementById("serverModalOverlay");
   const closeServersButton = document.getElementById("closeServersButton");
   const serverGrid = document.getElementById("serverGrid");
-  const serverPreviewName = document.getElementById("serverPreviewName");
-  const serverPreviewIp = document.getElementById("serverPreviewIp");
-  const serverPreviewVotes = document.getElementById("serverPreviewVotes");
-  const serverPreviewTags = document.getElementById("serverPreviewTags");
-  const copyServerNameButton = document.getElementById("copyServerNameButton");
-  const copyServerIpButton = document.getElementById("copyServerIpButton");
 
   let activeClientId = CLIENTS[0].id;
-  let activeServerIndex = 0;
   let loadTimer = null;
   let loadRequestId = 0;
 
@@ -887,12 +749,8 @@
     setActiveButton();
   }
 
-  function getTagClass(tag) {
-    return tag.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  }
-
   function updateCopyButtonState(button, text) {
-    const originalText = button.dataset.originalText || button.textContent;
+    const originalText = button.dataset.originalText || "Copy";
     button.textContent = text;
     window.setTimeout(() => {
       button.textContent = originalText;
@@ -916,47 +774,42 @@
     document.body.removeChild(helper);
   }
 
-  function renderSelectedServer() {
-    const server = SERVERS[activeServerIndex];
-    if (!server) {
-      return;
-    }
-
-    serverPreviewName.textContent = server.name;
-    serverPreviewIp.textContent = server.ip;
-    serverPreviewVotes.textContent = server.votes;
-    serverPreviewTags.innerHTML = server.tags
-      .map((tag) => '<span class="server-tag ' + getTagClass(tag) + '">' + tag + "</span>")
-      .join("");
-
-    serverGrid.querySelectorAll(".server-entry").forEach((button, index) => {
-      button.classList.toggle("active", index === activeServerIndex);
-    });
-  }
-
   function buildServerMenu() {
     const fragment = document.createDocumentFragment();
 
-    SERVERS.forEach((server, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "server-entry";
-      button.textContent = server.name;
-      button.addEventListener("click", () => {
-        activeServerIndex = index;
-        renderSelectedServer();
+    SERVERS.forEach((server) => {
+      const row = document.createElement("div");
+      row.className = "server-entry";
+
+      const label = document.createElement("div");
+      label.className = "server-entry-label";
+      label.textContent = server.name;
+
+      const copyButton = document.createElement("button");
+      copyButton.type = "button";
+      copyButton.className = "copy-button";
+      copyButton.textContent = "Copy";
+      copyButton.dataset.originalText = "Copy";
+      copyButton.addEventListener("click", async () => {
+        try {
+          await copyText(server.ip);
+          updateCopyButtonState(copyButton, "Copied");
+        } catch (error) {
+          updateCopyButtonState(copyButton, "Failed");
+        }
       });
-      fragment.appendChild(button);
+
+      row.appendChild(label);
+      row.appendChild(copyButton);
+      fragment.appendChild(row);
     });
 
     serverGrid.appendChild(fragment);
-    renderSelectedServer();
   }
 
   function openServerMenu() {
     serverModalOverlay.classList.add("open");
     serverModalOverlay.setAttribute("aria-hidden", "false");
-    renderSelectedServer();
   }
 
   function closeServerMenu() {
@@ -1023,37 +876,6 @@
   serverModalOverlay.addEventListener("click", (event) => {
     if (event.target === serverModalOverlay) {
       closeServerMenu();
-    }
-  });
-
-  copyServerNameButton.dataset.originalText = copyServerNameButton.textContent;
-  copyServerIpButton.dataset.originalText = copyServerIpButton.textContent;
-
-  copyServerNameButton.addEventListener("click", async () => {
-    const server = SERVERS[activeServerIndex];
-    if (!server) {
-      return;
-    }
-
-    try {
-      await copyText(server.name);
-      updateCopyButtonState(copyServerNameButton, "Copied");
-    } catch (error) {
-      updateCopyButtonState(copyServerNameButton, "Failed");
-    }
-  });
-
-  copyServerIpButton.addEventListener("click", async () => {
-    const server = SERVERS[activeServerIndex];
-    if (!server) {
-      return;
-    }
-
-    try {
-      await copyText(server.ip);
-      updateCopyButtonState(copyServerIpButton, "Copied");
-    } catch (error) {
-      updateCopyButtonState(copyServerIpButton, "Failed");
     }
   });
 
